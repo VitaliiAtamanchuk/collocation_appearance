@@ -15,42 +15,42 @@
                     Word appearance for selected words
                 </v-btn>
                 <v-card-title>
-                        <v-layout row wrap>
-                            <v-flex xs12>
-                                <div class='title pl-5'>
-                                <span v-if='isRandActive'>Rand List</span>
-                                <span v-else>Overall Word List</span>
-                                </div>
-                                <v-layout row wrap>
-                                <v-btn color='primary' @click='get_words()'>
-                                    Word List</v-btn>
-                                <v-btn color='primary' class='pr-4' @click='get_rand_words()'>
-                                    Rand Word List
-                                    <v-badge color="cyan" class='px-1 mr-1' right>
-                                        <span slot="badge">{{randWordsAmount}}</span>
-                                    </v-badge>
-                                </v-btn>
-                                <v-spacer />
-                                <v-flex xs4 align-right>
-                                <v-text-field
-                                    label="Rand words amount"
-                                    single-line
-                                    v-model='randWordsAmount'
-                                    outline
-                                ></v-text-field>
-                                </v-flex>
-                                </v-layout>
-                            </v-flex>
-                            <v-flex xs12>
-                                <v-text-field
-                                v-model="search"
-                                append-icon="search"
-                                label="Search"
+                    <v-layout row wrap>
+                        <v-flex xs12>
+                            <div class='title pl-5'>
+                            <span v-if='isRandActive'>Rand List</span>
+                            <span v-else>Overall Word List</span>
+                            </div>
+                            <v-layout row wrap>
+                            <v-btn color='primary' @click='get_words()'>
+                                Word List</v-btn>
+                            <v-btn color='primary' class='pr-4' @click='get_rand_words()'>
+                                Rand Word List
+                                <v-badge color="cyan" class='px-1 mr-1' right>
+                                    <span slot="badge">{{randWordsAmount}}</span>
+                                </v-badge>
+                            </v-btn>
+                            <v-spacer />
+                            <v-flex xs4 align-right>
+                            <v-text-field
+                                label="Rand words amount"
                                 single-line
-                                hide-details
-                                ></v-text-field>
+                                v-model='randWordsAmount'
+                                outline
+                            ></v-text-field>
+                            </v-flex>
+                            </v-layout>
                         </v-flex>
-                        </v-layout>
+                        <v-flex xs12>
+                            <v-text-field
+                            v-model="search"
+                            append-icon="search"
+                            label="Search"
+                            single-line
+                            hide-details
+                            ></v-text-field>
+                    </v-flex>
+                    </v-layout>
 
                     </v-card-title>
                     <v-data-table
@@ -75,8 +75,14 @@
                             </td>
                             <td>{{ props.item.word }}</td>
                             <td><a :href="props.item.link" target='_blank'>
-                                {{ props.item.link }}
+                                oxf3000
                             </a></td>
+                            <td>{{ props.item.appearance_num }}</td>
+                            <td>
+                              <v-btn small color="red lighten-2" @click='mark_learned(props.item)'>
+                                Learned<v-icon>save</v-icon>
+                              </v-btn>
+                            </td>
                         </template>
                         <v-alert slot="no-results" :value="true" color="error" icon="warning">
                             Your search for "{{ search }}" found no results.
@@ -103,17 +109,23 @@ export default {
             headers: [
                 {text: 'Word', value: 'word'},
                 {text: 'Link', value: 'link', sortable: false},
+                {text: 'Appearance num', value: 'appearance_num'},
             ],
         }
     },
     created() {
-        // this.get_words()
-        this.get_rand_words()
+        this.get_words()
+        // this.get_rand_words()
     },
     methods: {
         ...mapMutations([
            'selectWords' ,
         ]),
+        mark_learned(item) {
+          // this.post('http://localhost:8000/mark_learned', {}).then(response => {
+          //
+          // })
+        },
         word_appearance() {
           this.selectWords(this.selected)
           this.$router.push('display_word_app')
@@ -122,7 +134,7 @@ export default {
             this.isRandActive = true
             this.loading = true
             const word_num = this.randWordsAmount
-            this.$http.get('http://localhost:8000/rand_words', 
+            this.$http.get('http://localhost:8000/rand_words',
             {params: {'word_num': word_num}}).then(response => {
                 console.log(response)
                 this.words = response.body;

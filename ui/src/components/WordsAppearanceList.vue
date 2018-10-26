@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 sm6 md4 xl2 v-for="(value, word, index) in wordsAppearances" :key='index'>
+    <v-flex xs12 sm6 md3 xl2 v-for="(value, word, index) in wordsAppearances" :key='index'>
       <word-appearance-card :value='value' :word='word' />
     </v-flex>
   </v-layout>

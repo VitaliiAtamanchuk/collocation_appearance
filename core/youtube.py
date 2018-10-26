@@ -4,7 +4,7 @@ from youtube_dl.utils import DEFAULT_OUTTMPL, MaxDownloadsReached
 
 def download_subtitles_from_link(url, max_downloads=10):
     ydl_opts = {
-        'writeautomaticsub': True,
+        # 'writeautomaticsub': True,
         'subtitleslangs': ['en'],
         'skip_download': True,
         'outtmpl': './subtitles/' + DEFAULT_OUTTMPL,
@@ -14,6 +14,6 @@ def download_subtitles_from_link(url, max_downloads=10):
     }
     with youtube_dl.YoutubeDL(ydl_opts) as ydl:
         try:
-            resp = ydl.download([url])
+            ydl.download([url])
         except MaxDownloadsReached:
             pass

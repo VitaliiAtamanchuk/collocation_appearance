@@ -24,9 +24,9 @@ def get_all_wordlist_pages_links():
             page = get_page(next_page_link)
             word_link_list.extend(get_word_lists_from_page(page))
             pages_links.append(next_page_link)
-    
+
     with open('word_link.csv', 'w', newline='') as csvfile:
-        writer = csv.writer(csvfile, delimiter=' ', 
+        writer = csv.writer(csvfile, delimiter=' ',
             quotechar='|', quoting=csv.QUOTE_MINIMAL)
         for word_link in word_link_list:
             writer.writerow(word_link)
@@ -71,15 +71,33 @@ def get_rand_words(num=10):
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         for row in spamreader:
             rows.append(row)
-    
+
     retval = []
     for i in range(num):
         word, link = random.choice(rows)
-        if word[-2:] in [' 1',
-             ' 2']:
+        if word[-2:] in [' 1', ' 2']:
             word = word[:-2]
         retval.append({
             'word': word,
             'link': link,
+        })
+    return retval
+
+
+def get_all_words_listdict():
+    print('helloo')
+    rows = []
+    with open('word_link.csv', newline='') as csvfile:
+        spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        for row in spamreader:
+            rows.append(row)
+
+    retval = []
+    print(rows)
+    for row in rows:
+        print(row)
+        retval.append({
+            'word': row[0],
+            'link': row[1],
         })
     return retval
