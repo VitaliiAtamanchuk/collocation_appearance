@@ -93,9 +93,7 @@ def get_all_words_listdict():
             rows.append(row)
 
     retval = []
-    print(rows)
     for row in rows:
-        print(row)
         retval.append({
             'word': row[0],
             'link': row[1],

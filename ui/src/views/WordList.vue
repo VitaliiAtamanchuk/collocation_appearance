@@ -55,7 +55,7 @@
                     </v-card-title>
                     <v-data-table
                         :headers="headers"
-                        :items="words"
+                        :items="filteredWords"
                         :search="search"
                         :loading="loading"
                         v-model="selected"
@@ -116,6 +116,13 @@ export default {
     created() {
         this.get_words()
         // this.get_rand_words()
+    },
+    computed: {
+        filteredWords() {
+            return this.words.filter((i) => {
+                return i.includes(this.search)
+            })
+        }
     },
     methods: {
         ...mapMutations([

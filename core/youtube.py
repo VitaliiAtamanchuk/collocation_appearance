@@ -4,10 +4,10 @@ from youtube_dl.utils import DEFAULT_OUTTMPL, MaxDownloadsReached
 
 def download_subtitles_from_link(url, max_downloads=10):
     ydl_opts = {
-        # 'writeautomaticsub': True,
         'subtitleslangs': ['en'],
         'skip_download': True,
         'outtmpl': './subtitles/' + DEFAULT_OUTTMPL,
+        'writesubtitles': True,
         'max_downloads': max_downloads,
         'writeinfojson': True,
         'sleep_interval': 5,

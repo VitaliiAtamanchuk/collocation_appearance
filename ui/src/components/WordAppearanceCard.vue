@@ -28,30 +28,23 @@
                 </v-layout>
               </v-card-title>
               <v-card-text>
-                <v-list
-                  light
-                  subheader
-                  two-line
-                  v-for="(appearance, index) in value['appearance']"
-                  :key='index'
-                >
-                  <v-list-tile @click="">
-                    <!-- <v-list-tile-action>
-                      <v-checkbox v-model="notifications"></v-checkbox>
-                    </v-list-tile-action> -->
-                    <v-list-tile-content>
-                      <v-list-tile-title>
-                        <a
-                          :href='get_youtube_time_url(appearance["webpage_url"], appearance["start"])'
-                          target='_blank'>
-                          {{appearance['title']}}</a>
-                      </v-list-tile-title>
-                      <v-list-tile-sub-title>
-                        {{appearance['start'] | formatTime}}-{{appearance['end'] | formatTime}}
-                      </v-list-tile-sub-title>
-                    </v-list-tile-content>
-                  </v-list-tile>
-                </v-list>
+                <v-data-table
+                        :headers="headers"
+                        :items="value['appearance']"
+                        item-key="link" 
+                        light
+                        class="elevation-1"
+                        :rows-per-page-items="[5,10,20]"
+                    >
+                        <template slot="items" slot-scope="props">
+                            <td><a 
+                                :href="get_youtube_time_url(props.item.webpage_url, props.item.start)"
+                                target='_blank'>
+                                {{props.item.title}}
+                            </a></td>
+                            <td>{{ props.item.start | formatTime }} - {{ props.item.end | formatTime }}</td>
+                        </template>
+                    </v-data-table>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
@@ -71,6 +64,10 @@ export default {
   props: ['value', 'word'],
   data() {
     return {
+      headers: [
+        {text: 'Link', sortable: false},
+        {text: 'Time', sortable: false},
+      ],
       show: false,
       numOfTabs: 10,
     }

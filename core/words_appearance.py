@@ -56,7 +56,10 @@ def get_words_appearance_dict(words):
             with open(json_info_file) as f:
                 info = json.load(f)
             for word_app in words_appearance:
-                match = set(word_app.lower().split()).issubset(tokens)
+                if len(word_app.lower().split()) > 1:
+                    match = word_app.lower() in caption.text.lower()
+                else:
+                    match = set(word_app.lower().split()).issubset(tokens)
                 if match:
                     words_appearance[word_app]['appearance'].append({
                         'start': caption.start,
